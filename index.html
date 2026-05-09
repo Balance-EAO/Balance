@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Balance | Массаж | Гармония тела</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Подключаем отдельный CSS файл -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="nav-bar">
+            <div class="logo"><i class="fas fa-balance-scale"></i> Balance</div>
+            <div class="nav-links">
+                <a href="#home">Главная</a>
+                <a href="#services">Услуги</a>
+                <a href="#booking-form">Запись</a>
+                <button id="openAdminModalBtn" class="admin-btn"><i class="fas fa-lock"></i> Админ</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="home" class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <h1>Кабинет массажа <br>Balance</h1>
+            <p>Восстановление баланса тела и духа. Запись только на будущие даты. Каждое время уникально.</p>
+            <div class="hero-badge"><i class="fas fa-clock"></i> Ежедневно 10:00 – 16:40 | сеансы разной длительности</div>
+            <div class="slogan-box" id="sloganText">⚖️ Обрети баланс с каждым прикосновением</div>
+        </div>
+        <div class="hero-img"><i class="fas fa-hand-peace"></i></div>
+    </div>
+</section>
+
+<section id="services" class="services">
+    <div class="container">
+        <h2 class="section-title">Наши процедуры</h2>
+        <div class="zones-grid" id="servicesGrid"></div>
+    </div>
+</section>
+
+<section id="booking-form" class="booking-section">
+    <div class="container">
+        <div class="booking-wrapper">
+            <div class="form-col">
+                <h2 style="margin-bottom:24px; color:#b8860b;"><i class="fas fa-calendar-alt"></i> Запись на сеанс</h2>
+                <form id="massageForm">
+                    <div class="form-group">
+                        <label><i class="fas fa-user-circle"></i> ФИО <span class="required-star">*</span></label>
+                        <input type="text" id="fullname" placeholder="Иванова Анна Сергеевна" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone-alt"></i> Телефон <span class="required-star">*</span></label>
+                        <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-hand-spa"></i> Выберите массаж <span class="required-star">*</span></label>
+                        <select id="service" required></select>
+                        <div class="price-display" id="priceDisplay">Стоимость: </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-day"></i> Дата сеанса <span class="required-star">*</span></label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Время сеанса <span class="required-star">*</span> (шаг 1ч 20мин)</label>
+                        <select id="timeSlot" required>
+                            <option value="">Выберите время</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:20">11:20</option>
+                            <option value="12:40">12:40</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:20">15:20</option>
+                            <option value="16:40">16:40</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-comment-dots"></i> Комментарий</label>
+                        <textarea id="comment" rows="2" placeholder="Пожелания..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-check-circle"></i> Записаться</button>
+                </form>
+            </div>
+            <div class="info-col">
+                <h3><i class="fas fa-balance-scale"></i> Balance</h3>
+                <p>Гармония начинается с заботы о себе. Запись только на свободные слоты — занятые автоматически скрываются.</p>
+                <div><i class="fas fa-phone"></i> +7 (912) 808-44-22</div>
+                <div><i class="fas fa-envelope"></i> balance@massage.studio</div>
+                <div><i class="fas fa-map-pin"></i> Москва, ул. Гармонии, 10</div>
+                <div><i class="fas fa-calendar-alt"></i> Ежедневно 10:00–16:40</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Админ-панель -->
+<div id="adminPanel" class="admin-panel">
+    <div class="container">
+        <div class="admin-header">
+            <h2><i class="fas fa-user-shield"></i> Панель администратора</h2>
+            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+        </div>
+
+        <!-- Расписание на день -->
+        <div class="daily-schedule">
+            <h3><i class="fas fa-calendar-day"></i> Расписание на день</h3>
+            <div class="daily-nav">
+                <button id="prevDayBtn"><i class="fas fa-chevron-left"></i> Предыдущий день</button>
+                <input type="date" id="scheduleDatePicker" value="">
+                <button id="nextDayBtn">Следующий день <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="table-container">
+                <table id="dailyScheduleTable">
+                    <thead>
+                        <tr><th>Время</th><th>ФИО</th><th>Телефон</th><th>Услуга</th><th>Комментарий</th><th>Действие</th><tr>
+                    </thead>
+                    <tbody id="dailyScheduleBody">
+                        <tr><td colspan="6">Выберите дату</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Блокировки -->
+        <div class="schedule-block">
+            <h3><i class="fas fa-calendar-times"></i> Блокировка дней и слотов</h3>
+            <div class="schedule-form">
+                <div class="form-group">
+                    <label>Дата:</label>
+                    <input type="date" id="blockDate" min="">
+                </div>
+                <div class="form-group">
+                    <label>Время (оставьте пустым для блокировки всего дня):</label>
+                    <select id="blockTime">
+                        <option value="">-- Весь день --</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:20">11:20</option>
+                        <option value="12:40">12:40</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:20">15:20</option>
+                        <option value="16:40">16:40</option>
+                    </select>
+                </div>
+                <button id="addBlockBtn" class="btn-primary" style="width: auto; padding: 12px 24px;">Заблокировать</button>
+            </div>
+            <div id="blocksList" class="block-list">
+                <strong>Текущие блокировки:</strong><br>
+                <span>Загрузка...</span>
+            </div>
+        </div>
+
+        <h3><i class="fas fa-list-alt"></i> Все записи клиентов</h3>
+        <div class="table-container">
+            <table id="adminTable">
+                <thead><tr><th>Дата</th><th>Время</th><th>ФИО</th><th>Телефон</th><th>Услуга</th><th>Длительность</th><th>Стоимость</th><th>Комментарий</th><th>Дата создания</th><th>Действие</th></tr></thead>
+                <tbody id="adminTableBody"><tr><td colspan="10">Загрузка...</td></tr></tbody>
+            </table>
+        </div>
+        <button id="clearAllAdminBtn" style="margin-top:20px; background:#f0e2ca; border:none; padding:10px 20px; border-radius:40px;"><i class="fas fa-trash-alt"></i> Очистить все записи</button>
+    </div>
+</div>
+
+<footer><div class="container"><p><i class="fas fa-copyright"></i> 2025 Balance — ваш путь к гармонии.</p></div></footer>
+<div id="toastMessage" class="toast-msg"></div>
+
+<!-- Модалки -->
+<div id="adminModal" class="modal"><div class="modal-content"><i class="fas fa-lock" style="font-size:40px;color:#b8860b;"></i><h3>Вход администратора</h3><input type="text" id="adminLogin" placeholder="Логин" style="width:100%;margin:10px0;"><input type="password" id="adminPassword" placeholder="Пароль" style="width:100%;margin:10px0;"><button id="submitAdminLogin" class="btn-primary" style="margin-top:10px;">Войти</button><button id="closeModalBtn" style="margin-top:10px;background:transparent;">Отмена</button></div></div>
+<div id="serviceModal" class="modal"><div class="modal-content"><h3 id="modalTitle"></h3><div id="modalBody"></div><button class="close-modal">Закрыть</button></div></div>
+
+<script>
+    // ---------- Услуги (с ОРВИ в противопоказаниях) ----------
+    const servicesData = [
+        { name: "Классический массаж", duration: "60 мин", price: 1200, icon: "fa-spa", indications: "Общее расслабление, снятие напряжения.", contraindications: "ОРВИ, острые респираторные инфекции, повышенная температура, острые воспаления, онкология." },
+        { name: "ШВЗ (шейно-воротниковая)", duration: "30 мин", price: 800, icon: "fa-necklace", indications: "Головные боли, остеохондроз.", contraindications: "ОРВИ, острые инфекции, тромбоз, гипертония в стадии обострения." },
+        { name: "Массаж ног", duration: "40 мин", price: 1000, icon: "fa-walking", indications: "Отеки, усталость ног.", contraindications: "ОРВИ, тромбофлебит, трофические язвы." },
+        { name: "Массаж спины", duration: "40 мин", price: 1000, icon: "fa-ribbon", indications: "Боли в спине, сколиоз.", contraindications: "ОРВИ, грыжи в острой фазе, травмы позвоночника." },
+        { name: "Массаж стоп", duration: "30 мин", price: 500, icon: "fa-shoe-prints", indications: "Плоскостопие, усталость стоп.", contraindications: "ОРВИ, грибок, подагра." }
+    ];
+
+    const slogans = [
+        "⚖️ Balance — точка равновесия тела", "🌸 Гармония начинается с массажа Balance",
+        "🌿 Восстанови баланс энергии с нами", "💆‍♀️ Равновесие в каждом движении рук",
+        "🌙 Успокой ум, расслабь тело — Balance", "✨ Баланс — это не точка, а путь",
+        "🍃 Прикосновение, возвращающее баланс", "⭐ Кабинет Balance: где напряжение уходит в ноль",
+        "🌊 Твоя внутренняя гармония — наша цель", "🕊️ Массаж Balance: симфония здоровья"
+    ];
+
+    let appointments = [];
+    let blocks = [];
+
+    function loadData() {
+        const storedApps = localStorage.getItem('balance_appointments');
+        if(storedApps) { try { appointments = JSON.parse(storedApps); } catch(e) {} }
+        const storedBlocks = localStorage.getItem('balance_blocks');
+        if(storedBlocks) { try { blocks = JSON.parse(storedBlocks); } catch(e) {} }
+        if(window.isAdminLoggedIn) { renderAdminTable(); renderBlocksList(); }
+        renderDailySchedule(currentScheduleDate);
+    }
+    function saveData() {
+        localStorage.setItem('balance_appointments', JSON.stringify(appointments));
+        localStorage.setItem('balance_blocks', JSON.stringify(blocks));
+    }
+
+    function isSlotBlocked(date, timeSlot) {
+        return blocks.some(block => block.date === date && (!block.timeSlot || block.timeSlot === timeSlot));
+    }
+    function isSlotBooked(date, timeSlot) {
+        return appointments.some(a => a.date === date && a.timeSlot === timeSlot);
+    }
+
+    function addAppointment(fullname, phone, serviceName, price, duration, date, timeSlot, comment) {
+        if(isSlotBlocked(date, timeSlot)) { showToast("❌ Этот слот заблокирован"); return false; }
+        if(isSlotBooked(date, timeSlot)) { showToast("❌ Это время уже занято"); return false; }
+        const newApp = { id: Date.now(), fullname: escapeHtml(fullname.trim()), phone: escapeHtml(phone.trim()), service: serviceName, price, duration, date, timeSlot, comment: escapeHtml(comment.trim()) || "—", createdAt: new Date().toLocaleString('ru-RU') };
+        appointments.push(newApp);
+        saveData();
+        if(window.isAdminLoggedIn) { renderAdminTable(); renderDailySchedule(currentScheduleDate); }
+        updateTimeSlotOptions();
+        showToast(`✅ Запись на ${date} в ${timeSlot} добавлена!`);
+        return true;
+    }
+    function deleteAppointment(id) {
+        appointments = appointments.filter(a => a.id !== id);
+        saveData();
+        if(window.isAdminLoggedIn) { renderAdminTable(); renderDailySchedule(currentScheduleDate); }
+        updateTimeSlotOptions();
+        showToast("Запись удалена");
+    }
+    function clearAllAppointments() {
+        if(confirm("Удалить все записи?")) { appointments = []; saveData(); if(window.isAdminLoggedIn) renderAdminTable(); renderDailySchedule(currentScheduleDate); updateTimeSlotOptions(); showToast("Все записи очищены"); }
+    }
+
+    function addBlock(date, timeSlot) {
+        if(!date) { showToast("Выберите дату"); return false; }
+        if(blocks.some(b => b.date === date && b.timeSlot === timeSlot)) { showToast("Блокировка уже есть"); return false; }
+        blocks.push({ date, timeSlot: timeSlot || undefined });
+        saveData();
+        if(window.isAdminLoggedIn) renderBlocksList();
+        updateTimeSlotOptions();
+        showToast(`Заблокирован ${date}${timeSlot ? ' время ' + timeSlot : ' (весь день)'}`);
+        return true;
+    }
+    function removeBlock(date, timeSlot) {
+        blocks = blocks.filter(b => !(b.date === date && b.timeSlot === timeSlot));
+        saveData();
+        if(window.isAdminLoggedIn) renderBlocksList();
+        updateTimeSlotOptions();
+        showToast("Блокировка снята");
+    }
+    function renderBlocksList() {
+        const container = document.getElementById('blocksList');
+        if(!container) return;
+        if(blocks.length === 0) { container.innerHTML = '<strong>Текущие блокировки:</strong><br><span>Нет блокировок</span>'; return; }
+        let html = '<strong>Текущие блокировки:</strong><br>';
+        blocks.forEach(block => {
+            html += `<div class="block-item">${block.date} ${block.timeSlot ? `(${block.timeSlot})` : '(весь день)'} 
+                     <button onclick="window.removeBlockUI('${block.date}', '${block.timeSlot || ''}')"><i class="fas fa-trash-alt"></i></button></div>`;
+        });
+        container.innerHTML = html;
+    }
+    window.removeBlockUI = (date, timeSlot) => removeBlock(date, timeSlot || undefined);
+
+    function renderAdminTable() {
+        const tbody = document.getElementById('adminTableBody');
+        if(!tbody) return;
+        if(appointments.length === 0) { tbody.innerHTML = '<tr><td colspan="10">Нет записей</td></tr>'; return; }
+        let html = '';
+        appointments.forEach(app => {
+            html += `<tr><td>${app.date}</td><td>${app.timeSlot}</td><td>${app.fullname}</td><td>${app.phone}</td><td>${app.service}</td><td>${app.duration}</td><td>${app.price}₽</td><td>${app.comment}</td><td>${app.createdAt}</td><td><button class="delete-btn" data-id="${app.id}"><i class="fas fa-trash-can"></i></button></td></tr>`;
+        });
+        tbody.innerHTML = html;
+        document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = Number(btn.getAttribute('data-id')); if(confirm("Удалить?")) deleteAppointment(id); }));
+    }
+
+    let currentScheduleDate = new Date().toISOString().slice(0,10);
+    function renderDailySchedule(date) {
+        const tbody = document.getElementById('dailyScheduleBody');
+        if(!tbody) return;
+        const appointmentsOnDate = appointments.filter(a => a.date === date);
+        const allTimes = ["10:00","11:20","12:40","14:00","15:20","16:40"];
+        if(appointmentsOnDate.length === 0 && !allTimes.some(t => appointmentsOnDate.some(a => a.timeSlot === t))) {
+            tbody.innerHTML = '<tr><td colspan="6">Нет записей на эту дату</td></tr>';
+        } else {
+            let html = '';
+            for(let time of allTimes) {
+                const app = appointmentsOnDate.find(a => a.timeSlot === time);
+                if(app) {
+                    html += `<tr><td>${time}</td><td>${app.fullname}</td><td>${app.phone}</td><td>${app.service}</td><td>${app.comment}</td><td><button class="delete-schedule-btn" data-id="${app.id}"><i class="fas fa-trash-alt"></i> Удалить</button></td></tr>`;
+                } else {
+                    const isBlocked = isSlotBlocked(date, time);
+                    html += `<tr style="opacity:0.7"><td>${time}</td><td colspan="4">${isBlocked ? '🔒 Заблокирован' : 'Свободно'}</td><td></td></tr>`;
+                }
+            }
+            tbody.innerHTML = html;
+            document.querySelectorAll('.delete-schedule-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = Number(btn.getAttribute('data-id')); if(confirm("Удалить запись?")) deleteAppointment(id); }));
+        }
+        document.getElementById('scheduleDatePicker').value = date;
+    }
+    function setScheduleDate(date) {
+        currentScheduleDate = date;
+        renderDailySchedule(currentScheduleDate);
+    }
+    window.prevDay = () => {
+        let newDate = new Date(currentScheduleDate + "T12:00:00");
+        newDate.setDate(newDate.getDate() - 1);
+        setScheduleDate(newDate.toISOString().slice(0,10));
+    };
+    window.nextDay = () => {
+        let newDate = new Date(currentScheduleDate + "T12:00:00");
+        newDate.setDate(newDate.getDate() + 1);
+        setScheduleDate(newDate.toISOString().slice(0,10));
+    };
+
+    function updateTimeSlotOptions() {
+        const date = document.getElementById('appointmentDate').value;
+        const timeSelect = document.getElementById('timeSlot');
+        if(!date || !timeSelect) return;
+        const options = timeSelect.querySelectorAll('option[value]');
+        options.forEach(opt => {
+            const val = opt.value;
+            if(val && (isSlotBooked(date, val) || isSlotBlocked(date, val))) {
+                opt.disabled = true;
+                opt.style.color = '#aaa';
+                if(opt.selected) timeSelect.value = '';
+            } else {
+                opt.disabled = false;
+                opt.style.color = '';
+            }
+        });
+    }
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    function validatePhone(phone) { return phone.replace(/\D/g, '').length >= 10; }
+    function showToast(msg) {
+        const toast = document.getElementById('toastMessage');
+        toast.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    let sloganIndex = 0;
+    function rotateSlogan() {
+        const el = document.getElementById('sloganText');
+        if(el) { el.style.opacity = '0'; setTimeout(() => { el.innerHTML = slogans[sloganIndex % slogans.length]; el.style.opacity = '1'; sloganIndex++; }, 200); }
+    }
+    setInterval(rotateSlogan, 5000);
+
+    function renderServices() {
+        const grid = document.getElementById('servicesGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        servicesData.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'zone-card';
+            card.innerHTML = `<i class="fas ${s.icon}"></i><span>${s.name}</span><small>${s.duration}</small><div class="price-time">${s.price} ₽</div>`;
+            card.addEventListener('click', () => openServiceModal(s));
+            grid.appendChild(card);
+        });
+    }
+    function openServiceModal(service) {
+        const modal = document.getElementById('serviceModal');
+        document.getElementById('modalTitle').innerText = `${service.name} (${service.duration}) — ${service.price}₽`;
+        document.getElementById('modalBody').innerHTML = `<p><strong>📖 Показания:</strong> ${service.indications}</p><p><strong>⚠️ Противопоказания:</strong> ${service.contraindications}</p><p><strong>⏱️ Длительность:</strong> ${service.duration}</p>`;
+        modal.style.display = 'flex';
+    }
+    function populateServiceSelect() {
+        const select = document.getElementById('service');
+        select.innerHTML = '';
+        servicesData.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.name;
+            opt.setAttribute('data-price', s.price);
+            opt.setAttribute('data-duration', s.duration);
+            opt.innerText = `${s.name} — ${s.duration} / ${s.price}₽`;
+            select.appendChild(opt);
+        });
+        updatePriceDisplay();
+    }
+    function updatePriceDisplay() {
+        const select = document.getElementById('service');
+        const price = select.options[select.selectedIndex]?.getAttribute('data-price') || 0;
+        document.getElementById('priceDisplay').innerText = `Стоимость: ${price} ₽`;
+    }
+    function setDateMinTomorrow() {
+        const dateInput = document.getElementById('appointmentDate');
+        const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+        const yyyy = tomorrow.getFullYear(), mm = String(tomorrow.getMonth()+1).padStart(2,'0'), dd = String(tomorrow.getDate()).padStart(2,'0');
+        dateInput.min = `${yyyy}-${mm}-${dd}`;
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+        dateInput.addEventListener('change', () => { if(dateInput.value < dateInput.min) dateInput.value = dateInput.min; updateTimeSlotOptions(); });
+        updateTimeSlotOptions();
+    }
+
+    const form = document.getElementById('massageForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fullname = document.getElementById('fullname').value;
+        const phone = document.getElementById('phone').value;
+        const sel = document.getElementById('service');
+        const serviceName = sel.value;
+        const price = parseInt(sel.options[sel.selectedIndex].getAttribute('data-price'));
+        const duration = sel.options[sel.selectedIndex].getAttribute('data-duration');
+        const date = document.getElementById('appointmentDate').value;
+        const timeSlot = document.getElementById('timeSlot').value;
+        const comment = document.getElementById('comment').value;
+        if(fullname.trim().length < 3) { showToast("Введите корректное ФИО"); return; }
+        if(!validatePhone(phone)) { showToast("Некорректный телефон"); return; }
+        if(!date) { showToast("Выберите дату"); return; }
+        if(!timeSlot) { showToast("Выберите время"); return; }
+        if(isSlotBooked(date, timeSlot)) { showToast("Это время уже занято"); return; }
+        if(isSlotBlocked(date, timeSlot)) { showToast("Этот слот заблокирован"); return; }
+        if(addAppointment(fullname, phone, serviceName, price, duration, date, timeSlot, comment)) {
+            form.reset();
+            setDateMinTomorrow();
+            document.getElementById('service').selectedIndex = 0;
+            updatePriceDisplay();
+            updateTimeSlotOptions();
+        }
+    });
+
+    // Админка
+    let isAdminLoggedIn = false;
+    window.isAdminLoggedIn = false;
+    function showAdminPanel(show) {
+        const panel = document.getElementById('adminPanel');
+        if(show) { panel.style.display = 'block'; renderAdminTable(); renderBlocksList(); renderDailySchedule(currentScheduleDate); window.isAdminLoggedIn = true; }
+        else { panel.style.display = 'none'; window.isAdminLoggedIn = false; }
+    }
+    const adminModal = document.getElementById('adminModal');
+    document.getElementById('openAdminModalBtn').onclick = () => adminModal.style.display = 'flex';
+    document.getElementById('closeModalBtn').onclick = () => adminModal.style.display = 'none';
+    document.getElementById('submitAdminLogin').onclick = () => {
+        const login = document.getElementById('adminLogin').value;
+        const pwd = document.getElementById('adminPassword').value;
+        if(login === 'admin' && pwd === 'sunrise2025') { adminModal.style.display = 'none'; showAdminPanel(true); showToast("Вход выполнен"); }
+        else showToast("Неверный логин или пароль");
+    };
+    document.getElementById('logoutBtn')?.addEventListener('click', () => showAdminPanel(false));
+    document.getElementById('clearAllAdminBtn')?.addEventListener('click', clearAllAppointments);
+    document.getElementById('addBlockBtn')?.addEventListener('click', () => {
+        const date = document.getElementById('blockDate').value;
+        const timeSlot = document.getElementById('blockTime').value;
+        if(!date) { showToast("Выберите дату"); return; }
+        addBlock(date, timeSlot || null);
+        document.getElementById('blockDate').value = '';
+        document.getElementById('blockTime').value = '';
+    });
+    const blockDateInput = document.getElementById('blockDate');
+    if(blockDateInput) {
+        const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+        blockDateInput.min = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
+    }
+    document.getElementById('prevDayBtn')?.addEventListener('click', () => window.prevDay());
+    document.getElementById('nextDayBtn')?.addEventListener('click', () => window.nextDay());
+    document.getElementById('scheduleDatePicker')?.addEventListener('change', (e) => setScheduleDate(e.target.value));
+
+    window.onclick = (e) => {
+        if(e.target === adminModal) adminModal.style.display = 'none';
+        if(e.target === document.getElementById('serviceModal')) document.getElementById('serviceModal').style.display = 'none';
+    };
+    document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', () => document.getElementById('serviceModal').style.display = 'none'));
+
+    renderServices();
+    populateServiceSelect();
+    loadData();
+    setDateMinTomorrow();
+    document.getElementById('service').addEventListener('change', updatePriceDisplay);
+    document.getElementById('appointmentDate').addEventListener('change', updateTimeSlotOptions);
+    setScheduleDate(currentScheduleDate);
+</script>
+</body>
+</html>
